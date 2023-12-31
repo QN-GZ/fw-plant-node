@@ -1,0 +1,99 @@
+author: mongoose-os
+description: A Mongoose OS app skeleton
+version: 1.0
+
+libs_version: ${mos.version}
+modules_version: ${mos.version}
+mongoose_os_version: ${mos.version}
+
+# Optional. List of tags for online search.
+tags:
+  - c
+
+# List of files / directories with C sources. No slashes at the end of dir names.
+sources:
+  - src
+
+includes:
+  - inc
+# List of dirs. Files from these dirs will be copied to the device filesystem
+filesystem:
+  - fs
+
+# Custom configuration entries, settable via "device configuration"
+# Below is a custom firmware configuration example.
+# Uncomment and modify according to your needs:
+
+config_schema:
+  - ["debug.level", 2] # production set to 2
+  - ["rpc.uart.baud_rate", 115200]
+  - ["wifi.ap.enable", false]
+  - ["wifi.ap.ssid", "PLANT_??????"]
+  - ["wifi.ap.pass", "PLANTATION"]
+  - ["wifi.ap.ip", "10.1.1.1"]
+  - ["wifi.ap.gw", "10.1.1.1"]
+  - ["wifi.ap.dhcp_start", "10.1.1.10"]
+  - ["wifi.ap.dhcp_end", "10.1.1.100"]
+  - ["wifi.sta.enable", true]
+  - ["wifi.sta.ssid", "FamilyGuest"]
+  - ["wifi.sta.pass", "QuangNaGuest"]
+  - ["wifi.sta1.ssid", ""]
+  - ["wifi.sta1.pass", ""]
+  - ["wifi.sta2.ssid", ""]
+  - ["wifi.sta2.pass", ""]
+  - ["wifi.sta_connect_timeout", 30]
+
+  - ["dns_sd.enable", true]
+  # - ["dns_sd.adv_only", "b", false, {title: "Only advertise, do not join multicast group"}]
+  - ["dns_sd.host_name", "plant-node"]
+  - ["dns_sd.txt", "device=plantnode"]
+  - ["device.id", ""]
+  - ["rpc.udp.listen_addr", "udp://0.0.0.0:10001"]
+
+# These settings get compiled into the C structure, and can be accessed
+# from the C code this way:
+#
+# printf("Hello from %s!\n", mgos_sys_config_get_device_id());
+#
+# Settings are cool: can be modified remotely without full firmware upgrade!
+#
+# To see all available compiled settings, buid the firmware and open
+# build/gen/mgos_config.h file.
+#
+# Also, in this config_schema section, you can override existing
+# settings that has been created by other libraries. For example, debug log
+# level is 2 by default. For this firmware we can override it to 3:
+#
+# config_schema:
+#  - ["debug.level", 3]
+
+libs:
+  - location: lib/mos/mongoose-os-libs/boards
+  - location: lib/mos/mongoose-os-libs/ca-bundle
+  - location: lib/mos/mongoose-os-libs/rpc-service-config
+  - location: lib/mos/mongoose-os-libs/rpc-service-fs
+  - location: lib/mos/mongoose-os-libs/rpc-uart
+  - location: lib/mos/mongoose-os-libs/rpc-udp
+  - location: lib/mos/mongoose-os-libs/dns-sd
+  - location: lib/mos/mongoose-os-libs/adc
+  - location: lib/mos/mongoose-os-libs/wifi
+# Apparently the mgos mbedtls library is a wrapper and is dependent on the open source mbedtls library.
+# So we need to tell mongoose where to get the dependency source, we'll track it in lib/mongoose-os-libs/modules/mbedtls
+modules:
+- name: mbedtls_module
+  location: lib/mos/mongoose-os-libs/modules/mbedtls
+  version: 2.16.11-cesanta1
+
+build_vars:
+  MGOS_ROOT_FS_TYPE: LFS
+  MGOS_ROOT_FS_SIZE: 5177344 #  5MB = 0x4F0000
+  APP_SLOT_SIZE: 3145728    # 3072kB = 0x300000
+  # enable 16MB flash size
+  ESP_IDF_SDKCONFIG_OPTS: >
+    ${build_vars.ESP_IDF_SDKCONFIG_OPTS}
+      CONFIG_ESPTOOLPY_FLASHSIZE_4MB=
+      CONFIG_ESPTOOLPY_FLASHSIZE_16MB=y
+      CONFIG_ESPTOOLPY_FLASHSIZE=16MB
+
+# Used by the mos tool to catch mos binaries incompatible with this file format
+manifest_version: 2017-09-29
