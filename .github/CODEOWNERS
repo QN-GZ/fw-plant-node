@@ -1,0 +1,5 @@
+# This file dictates Code Ownership for this repo
+# learn more here: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+# "gz-dev" owns all files
+*   @goal-zero/gz-dev
