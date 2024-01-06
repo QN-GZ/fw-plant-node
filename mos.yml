@@ -49,6 +49,13 @@ config_schema:
   - ["dns_sd.txt", "device=plantnode"]
   - ["device.id", ""]
   - ["rpc.udp.listen_addr", "udp://0.0.0.0:10001"]
+  - ["sys.esp32_adc_vref", 3300]
+  - ["sys.esp32_adc_width", 12]
+
+  # Plant Node Object
+  - ["plant", "o", {title: "Plant Node Object"}]
+  - ["plant.dryness", "i", 400, {title: "Plant dryness Level [1000-3000]"}]
+  - ["plant.dryness_max", "i", 2970, {title: "Plant dryness max Level"}]
 
 # These settings get compiled into the C structure, and can be accessed
 # from the C code this way:
@@ -77,6 +84,7 @@ libs:
   - location: lib/mos/mongoose-os-libs/dns-sd
   - location: lib/mos/mongoose-os-libs/adc
   - location: lib/mos/mongoose-os-libs/wifi
+  - location: lib/mos/mongoose-os-libs/adc
 # Apparently the mgos mbedtls library is a wrapper and is dependent on the open source mbedtls library.
 # So we need to tell mongoose where to get the dependency source, we'll track it in lib/mongoose-os-libs/modules/mbedtls
 modules:

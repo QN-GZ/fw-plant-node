@@ -20,7 +20,9 @@
 #include "mgos_rpc.h"
 #include "mgos_rpc_channel_udp.h"
 #include "mgos_wifi.h"
+
 #include "rpc_plant.h"
+#include "plant_node.h"
 
 #define LOGI(...) LOG(LL_INFO, (__VA_ARGS__))
 #define LOGD(...) LOG(LL_DEBUG, (__VA_ARGS__))
@@ -30,10 +32,6 @@
 #define UDP_LISTENER "udp://0.0.0.0:10001"
 
 static bool _appMainnWifiConnected = false;
-
-static void timer_cb(void *arg) {
-  char *err = NULL;
-}
 
 static void _app_main_wifi_event_cb(int ev, void *evd, void *arg) {
   switch(ev) {
@@ -71,13 +69,13 @@ enum mgos_app_init_result mgos_app_init(void) {
 #ifdef LED_PIN
   mgos_gpio_setup_output(LED_PIN, 0);
 #endif
-  mgos_set_timer(1000 /* ms */, MGOS_TIMER_REPEAT, timer_cb, NULL);
   char deviceId[32] = "myplant-";
   sprintf(deviceId, "myplant-%s", mgos_sys_ro_vars_get_mac_address());
   mgos_sys_config_set_device_id(deviceId);
   LOGI("App version: %s", mgos_sys_ro_vars_get_fw_version());
   LOGI("Mac address: %s", mgos_sys_ro_vars_get_mac_address());
   mgos_event_add_group_handler(MGOS_EVENT_GRP_WIFI, _app_main_wifi_event_cb, NULL);
+  plant_node_init();
   rpc_plant_init();
   return MGOS_APP_INIT_SUCCESS;
 }
