@@ -55,7 +55,7 @@ config_schema:
   # Plant Node Object
   - ["plant", "o", {title: "Plant Node Object"}]
   - ["plant.dryness", "i", 400, {title: "Plant dryness Level [1000-3000]"}]
-  - ["plant.dryness_max", "i", 2970, {title: "Plant dryness max Level"}]
+  - ["plant.dryness_max", "i", 2070, {title: "Plant dryness max Level"}]
 
 # These settings get compiled into the C structure, and can be accessed
 # from the C code this way:

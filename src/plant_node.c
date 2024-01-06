@@ -47,10 +47,12 @@ int plant_node_get_dryness() {
 
 int plant_node_set_max_dryness(int threshold) {
   _plant_max_dryness = threshold;
+  mgos_sys_config_set_plant_dryness_max(threshold);
+  save_cfg(&mgos_sys_config, NULL);
   return _plant_max_dryness;
 }
 
-int plant_node_get_dryness_threshold() {
+int plant_node_get_max_dryness() {
   return _plant_max_dryness;
 }
 

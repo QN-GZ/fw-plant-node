@@ -7,7 +7,7 @@ typedef void (*plant_node_dryness_threshold_observer)(int);
 void plant_node_init(void);
 int plant_node_get_dryness(void);
 int plant_node_set_max_dryness(int threshold);
-int plant_node_get_dryness_threshold(void);
+int plant_node_get_max_dryness(void);
 void plant_node_set_dryness_threshold_observer(plant_node_dryness_threshold_observer);
 // Declare any member variables or functions
 
